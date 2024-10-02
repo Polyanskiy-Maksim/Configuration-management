@@ -185,69 +185,36 @@ output [
 
 **Выполнение:**  
 ``` python
-class Package:
-    def __init__(self, name, version):
-        self.name = name
-        self.version = version
-        self.dependencies = {}
+import pkg_resources
 
-    def add_dependency(self, package, version):
-        self.dependencies[package] = version
+def show_package_dependencies(package_name):
+    try:
+        # Получаем информацию о пакете
+        distribution = pkg_resources.get_distribution(package_name)
+        print(f"Package: {distribution.project_name} ({distribution.version})")
+        print("Dependencies:")
+        
+        # Получаем зависимости
+        dependencies = distribution.requires()
+        if dependencies:
+            for dep in dependencies:
+                print(f" - {dep}")
+        else:
+            print(" No dependencies")
+    except pkg_resources.DistributionNotFound:
+        print(f"Package '{package_name}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-    def __str__(self):
-        deps = ', '.join([f"{pkg.name} ({ver})" for pkg, ver in self.dependencies.items()])
-        return f"{self.name} ({self.version}) depends on: {deps if deps else 'No dependencies'}"
-
-
-class PackageManager:
-    def __init__(self):
-        self.packages = {}
-
-    def add_package(self, name, version):
-        package = Package(name, version)
-        self.packages[name] = package
-        return package
-
-    def get_package(self, name):
-        return self.packages.get(name)
-
-    def show_dependencies(self):
-        for package in self.packages.values():
-            print(package)
-
-
-# Пример использования
 if __name__ == "__main__":
-    # Создаем менеджер пакетов
-    manager = PackageManager()
+    # Задаем имена пакетов, для которых нужно вывести зависимости
+    packages = ["requests", "numpy", "matplotlib"]
+    
+    for package in packages:
+        show_package_dependencies(package)
+        print()  # Печатаем пустую строку для разделения вывода
 
-    # Добавляем пакеты
-    root = manager.add_package("root", "1.0.0")
-    foo_1_0_0 = manager.add_package("foo", "1.0.0")
-    foo_1_1_0 = manager.add_package("foo", "1.1.0")
-    left = manager.add_package("left", "1.0.0")
-    right = manager.add_package("right", "1.0.0")
-    shared_1_0_0 = manager.add_package("shared", "1.0.0")
-    shared_2_0_0 = manager.add_package("shared", "2.0.0")
-    target_1_0_0 = manager.add_package("target", "1.0.0")
-    target_2_0_0 = manager.add_package("target", "2.0.0")
-
-    # Устанавливаем зависимости
-    root.add_dependency(foo_1_0_0, "1.0.0")
-    root.add_dependency(target_2_0_0, "2.0.0")
-    
-    foo_1_1_0.add_dependency(left, "1.0.0")
-    foo_1_1_0.add_dependency(right, "1.0.0")
-    
-    left.add_dependency(shared_1_0_0, ">= 1.0.0")
-    right.add_dependency(shared_1_0_0, "< 2.0.0")
-    
-    shared_1_0_0.add_dependency(target_1_0_0, "1.0.0")
-    
-    # Отображаем зависимости
-    print("Package Dependencies:")
-    manager.show_dependencies()
 ```
-![Снимок экрана 2024-10-02 172604](https://github.com/user-attachments/assets/b3608ddd-e034-4bea-b7de-6cc26995e41f)
+![Снимок экрана 2024-10-02 173327](https://github.com/user-attachments/assets/375e2ef2-9b73-4224-8f23-bebc8474c4f1)
 
 
