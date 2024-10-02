@@ -178,10 +178,76 @@ output [
 
 ---
 
-## Задание 7: MiniZinc - Общая форма задачи о зависимостях пакетов
+## Задание 7: Phython - Общая форма задачи о зависимостях пакетов
 
 **Описание:**  
 Представить задачу о зависимостях пакетов в общей форме, чтобы конкретный экземпляр задачи описывался только своим набором данных.
 
 **Выполнение:**  
-(вставить MiniZinc код и скриншот результата)
+``` python
+class Package:
+    def __init__(self, name, version):
+        self.name = name
+        self.version = version
+        self.dependencies = {}
+
+    def add_dependency(self, package, version):
+        self.dependencies[package] = version
+
+    def __str__(self):
+        deps = ', '.join([f"{pkg.name} ({ver})" for pkg, ver in self.dependencies.items()])
+        return f"{self.name} ({self.version}) depends on: {deps if deps else 'No dependencies'}"
+
+
+class PackageManager:
+    def __init__(self):
+        self.packages = {}
+
+    def add_package(self, name, version):
+        package = Package(name, version)
+        self.packages[name] = package
+        return package
+
+    def get_package(self, name):
+        return self.packages.get(name)
+
+    def show_dependencies(self):
+        for package in self.packages.values():
+            print(package)
+
+
+# Пример использования
+if __name__ == "__main__":
+    # Создаем менеджер пакетов
+    manager = PackageManager()
+
+    # Добавляем пакеты
+    root = manager.add_package("root", "1.0.0")
+    foo_1_0_0 = manager.add_package("foo", "1.0.0")
+    foo_1_1_0 = manager.add_package("foo", "1.1.0")
+    left = manager.add_package("left", "1.0.0")
+    right = manager.add_package("right", "1.0.0")
+    shared_1_0_0 = manager.add_package("shared", "1.0.0")
+    shared_2_0_0 = manager.add_package("shared", "2.0.0")
+    target_1_0_0 = manager.add_package("target", "1.0.0")
+    target_2_0_0 = manager.add_package("target", "2.0.0")
+
+    # Устанавливаем зависимости
+    root.add_dependency(foo_1_0_0, "1.0.0")
+    root.add_dependency(target_2_0_0, "2.0.0")
+    
+    foo_1_1_0.add_dependency(left, "1.0.0")
+    foo_1_1_0.add_dependency(right, "1.0.0")
+    
+    left.add_dependency(shared_1_0_0, ">= 1.0.0")
+    right.add_dependency(shared_1_0_0, "< 2.0.0")
+    
+    shared_1_0_0.add_dependency(target_1_0_0, "1.0.0")
+    
+    # Отображаем зависимости
+    print("Package Dependencies:")
+    manager.show_dependencies()
+```
+![image](https://github.com/user-attachments/assets/e53d07ac-5305-4aa2-844e-531a3c6f63e3)
+
+
