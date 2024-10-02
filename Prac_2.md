@@ -1,6 +1,4 @@
 # Практическое занятие №2  
-### П.Н. Советов, РТУ МИРЭА
-
 ---
 
 ## Задание 1: Пакет `matplotlib` (Python)
@@ -83,8 +81,15 @@ Dist: Объект с информацией о дистрибутиве, вкл
 **Выполнение:**  
 ![image](https://github.com/user-attachments/assets/6880bad9-55ad-4366-ac1b-67944e1ffbc3)
 
+  ``` python
+  sudo apt install graphviz
 
----
+  ```
+``` python
+  dot -Tpng dependencies.dot -o dependencies.png
+
+  ```
+![dependencies](https://github.com/user-attachments/assets/92343eae-b221-4bf7-9f4e-1e6a7259f03b)
 
 ## Задание 4: MiniZinc - Задача о счастливых билетах
 
@@ -95,11 +100,8 @@ Dist: Объект с информацией о дистрибутиве, вкл
 4. Найти минимальное решение для суммы 3 цифр.
 
 **Выполнение:**  
-- **Установка MiniZinc:**  
-  (вставить ссылку на установку и скриншот установки)
+![image](https://github.com/user-attachments/assets/8e2eb445-5622-4674-924d-128c21823a1f)
 
-- **Код задачи:**  
-  (вставить MiniZinc код и скриншот результата)
 
 ---
 
@@ -107,9 +109,12 @@ Dist: Объект с информацией о дистрибутиве, вкл
 
 **Описание:**  
 Решить задачу о зависимостях пакетов для рисунка, приведенного ниже.
+![image](https://github.com/user-attachments/assets/3cf0ea24-ef0e-425c-8312-76dbeba444ed)
+
 
 **Выполнение:**  
-(вставить MiniZinc код и скриншот результата)
+![image](https://github.com/user-attachments/assets/3ab1dc04-7d76-411f-bab5-77e7d53d2eab)
+
 
 ---
 
@@ -119,7 +124,9 @@ Dist: Объект с информацией о дистрибутиве, вкл
 Решить задачу о зависимостях пакетов для следующих данных.
 
 **Выполнение:**  
-(вставить MiniZinc код и скриншот результата)
+```
+
+```
 
 ---
 
