@@ -122,11 +122,59 @@ Dist: Объект с информацией о дистрибутиве, вкл
 
 **Описание:**  
 Решить задачу о зависимостях пакетов для следующих данных.
+```
+root 1.0.0 зависит от foo ^1.0.0 и target ^2.0.0.
+foo 1.1.0 зависит от left ^1.0.0 и right ^1.0.0.
+foo 1.0.0 не имеет зависимостей.
+left 1.0.0 зависит от shared >=1.0.0.
+right 1.0.0 зависит от shared <2.0.0.
+shared 2.0.0 не имеет зависимостей.
+shared 1.0.0 зависит от target ^1.0.0.
+target 2.0.0 и 1.0.0 не имеют зависимостей.
+```
 
 **Выполнение:**  
 ```
+% Объявляем версии пакетов
+var float: root_version = 1.0; 
+set of float: valid_foo_versions = {0.0, 1.0}; 
+var float: chosen_foo_version; 
+var float: left_pkg_version; 
+var float: right_pkg_version; 
+set of float: valid_shared_versions = {0.0, 1.0}; 
+var float: chosen_shared_version; 
+set of float: valid_target_versions = {1.0, 2.0}; 
+var float: chosen_target_version;
 
+% Ограничения зависимостей
+constraint (chosen_foo_version == 1.0 -> (chosen_target_version == 2.0));
+constraint (chosen_foo_version == 1.0 -> (left_pkg_version == 1.0) /\ (right_pkg_version == 1.0));
+constraint (left_pkg_version == 1.0 -> (chosen_shared_version >= 1.0));
+constraint (right_pkg_version == 1.0 -> (chosen_shared_version < 2.0));
+
+% Установите диапазоны для переменных
+constraint chosen_foo_version in valid_foo_versions;
+constraint left_pkg_version in 0.0..1.0;
+constraint right_pkg_version in 0.0..1.0;
+constraint chosen_shared_version in valid_shared_versions;
+constraint chosen_target_version in valid_target_versions;
+
+% Решение
+solve satisfy;
+
+% Вывод
+output [
+    "Root Version: ", show(root_version), "\n",
+    "Chosen Foo Version: ", show(chosen_foo_version), "\n",
+    "Left Package Version: ", show(left_pkg_version), "\n",
+    "Right Package Version: ", show(right_pkg_version), "\n",
+    "Chosen Shared Version: ", show(chosen_shared_version), "\n",
+    "Chosen Target Version: ", show(chosen_target_version), "\n"
+];
 ```
+**Выполнение:**  
+![image](https://github.com/user-attachments/assets/67259b41-53f9-47c9-afd2-453d11f42669)
+
 
 ---
 
