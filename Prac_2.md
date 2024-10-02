@@ -248,6 +248,6 @@ if __name__ == "__main__":
     print("Package Dependencies:")
     manager.show_dependencies()
 ```
-![image](https://github.com/user-attachments/assets/e53d07ac-5305-4aa2-844e-531a3c6f63e3)
+![Снимок экрана 2024-10-02 172604](https://github.com/user-attachments/assets/b3608ddd-e034-4bea-b7de-6cc26995e41f)
 
 
