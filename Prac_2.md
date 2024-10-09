@@ -135,45 +135,58 @@ target 2.0.0 и 1.0.0 не имеют зависимостей.
 
 **Выполнение:**  
 ```
-% Объявляем версии пакетов
-var float: root_version = 1.0; 
-set of float: valid_foo_versions = {0.0, 1.0}; 
-var float: chosen_foo_version; 
-var float: left_pkg_version; 
-var float: right_pkg_version; 
-set of float: valid_shared_versions = {0.0, 1.0}; 
-var float: chosen_shared_version; 
-set of float: valid_target_versions = {1.0, 2.0}; 
-var float: chosen_target_version;
+var int: root_major = 1; 
+var int: root_minor = 0; 
+var int: root_patch = 0;
 
-% Ограничения зависимостей
-constraint (chosen_foo_version == 1.0 -> (chosen_target_version == 2.0));
-constraint (chosen_foo_version == 1.0 -> (left_pkg_version == 1.0) /\ (right_pkg_version == 1.0));
-constraint (left_pkg_version == 1.0 -> (chosen_shared_version >= 1.0));
-constraint (right_pkg_version == 1.0 -> (chosen_shared_version < 2.0));
+set of int: foo_major = {0, 1}; 
+var int: foo_major_version; 
+var int: foo_minor_version = 0; 
+var int: foo_patch_version = 0;
 
-% Установите диапазоны для переменных
-constraint chosen_foo_version in valid_foo_versions;
-constraint left_pkg_version in 0.0..1.0;
-constraint right_pkg_version in 0.0..1.0;
-constraint chosen_shared_version in valid_shared_versions;
-constraint chosen_target_version in valid_target_versions;
+var int: left_major = 1; 
+var int: left_minor = 0; 
+var int: left_patch = 0;
 
-% Решение
+var int: right_major = 1; 
+var int: right_minor = 0; 
+var int: right_patch = 0;
+
+set of int: shared_major = {0, 1}; 
+var int: shared_major_version; 
+var int: shared_minor_version = 0; 
+var int: shared_patch_version = 0;
+
+set of int: target_major = {1, 2}; 
+var int: target_major_version; 
+var int: target_minor_version = 0; 
+var int: target_patch_version = 0;
+
+constraint (foo_major_version == 1 -> (target_major_version == 2));
+constraint (foo_major_version == 1 -> (left_major == 1) /\ (right_major == 1));
+constraint (left_major == 1 -> (shared_major_version >= 1));
+constraint (right_major == 1 -> (shared_major_version < 2));
+
+constraint foo_major_version in foo_major;
+constraint left_major in {0, 1};
+constraint right_major in {0, 1};
+constraint shared_major_version in shared_major;
+constraint target_major_version in target_major;
+
 solve satisfy;
 
-% Вывод
 output [
-    "Root Version: ", show(root_version), "\n",
-    "Chosen Foo Version: ", show(chosen_foo_version), "\n",
-    "Left Package Version: ", show(left_pkg_version), "\n",
-    "Right Package Version: ", show(right_pkg_version), "\n",
-    "Chosen Shared Version: ", show(chosen_shared_version), "\n",
-    "Chosen Target Version: ", show(chosen_target_version), "\n"
+    "root version: ", show(root_major), ".", show(root_minor), ".", show(root_patch), "\n",
+    "foo version: ", show(foo_major_version), ".", show(foo_minor_version), ".", show(foo_patch_version), "\n",
+    "left version: ", show(left_major), ".", show(left_minor), ".", show(left_patch), "\n",
+    "right version: ", show(right_major), ".", show(right_minor), ".", show(right_patch), "\n",
+    "shared version: ", show(shared_major_version), ".", show(shared_minor_version), ".", show(shared_patch_version), "\n",
+    "target version: ", show(target_major_version), ".", show(target_minor_version), ".", show(target_patch_version)
 ];
 ```
 **Выполнение:**  
-![image](https://github.com/user-attachments/assets/67259b41-53f9-47c9-afd2-453d11f42669)
+![image](https://github.com/user-attachments/assets/13305073-65f1-4791-8e18-1601fe8ead83)
+
 
 
 ---
