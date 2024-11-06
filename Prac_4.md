@@ -1,145 +1,299 @@
-# Практическое задание №4
+# Практическое задание №4. Системы контроля версий
 
-## Задача 0
-
-Работа с утилитой Make.
-Изучить основы языка утилиты таке. Распаковать в созданный каталог make.zip, если у вас в в системе нет таке. Создать приведенный ниже Makefile и проверить его работоспособность.
-```
-dress: trousers shoes jacket
-  @echo "All done. Let's go outside!"
-jacket: pullover
-  @echo "Putting on jacket."
-pullover: shirt
-  @echo "Putting on pullover."
-shirt:
-  @echo "Putting on shirt."
-trousers: underpants
-  @echo "Putting on trousers."
-underpants:
-  @echo "Putting on underpants."
-shoes: socks
-  @echo "Putting on shoes."
-socks: pullover
-  @echo "Putting on socks."
-```
-Визуализировать файл civgraph.txt.
-
-Результат:
-
-![image](https://github.com/user-attachments/assets/e06d9993-c93d-4081-95ec-1c5880a2ee4e)<br>
-
-Для визуализации напишем код на Python:<br>
-
-![image](https://github.com/user-attachments/assets/de22e87f-cb3c-4ba0-b82a-b60048ccd475)<br>
-
-В результате получим:<br>
-
-![image](https://github.com/user-attachments/assets/625ca26f-fb23-4ca9-a1d4-4e2d2eb4a8d0)<br>
+Работа с Git.
 
 ## Задача 1
-Написать программу на Питоне, которая транслирует граф зависимостей civgraph в makefile в духе примера выше. Для мало знакомых с Питоном используется упрощенный вариант civgraph: civgraph.json.
 
-Содержимое pr4_1.py:<br>
+На сайте https://onlywei.github.io/explain-git-with-d3 или http://git-school.github.io/visualizing-git/ (цвета могут отличаться, есть команды undo/redo) с помощью команд эмулятора git получить следующее состояние проекта (сливаем master с first, перебазируем second на master): см. картинку ниже. Прислать свою картинку.
+
+![image](https://github.com/user-attachments/assets/a30846f0-f7f9-4aaf-aa22-6e7bd336ff2e)
+
+## Решение:
+```bash
+git commit
+git tag in
+git branch first
+git branch second
+git commit
+git commit
+git checkout first
+git commit
+git commit
+git checkout master
+git merge first
+git checkout second
+git commit
+git commit
+git rebase master
+git checkout master
+git merge second
+git checkout in
 ```
-import json
 
-def generate_makefile(graph):
-    with open('Makefile', 'w') as f:
-        for target, deps in graph.items():
-            deps_str = ' '.join(deps)
-            f.write(f'{target}: {deps_str}\n')
-            f.write(f'\t@echo "Building {target}"\n\n')
+## Результат:
+
+![Снимок экрана 2024-11-01 134805](https://github.com/user-attachments/assets/0242718c-5291-422f-9c34-9acff5d4d0db)
+
+## Задача 2
+
+Создать локальный git-репозиторий. Задать свои имя и почту (далее – coder1). Разместить файл prog.py с какими-нибудь данными. Прислать в текстовом виде диалог с git.
+
+## Решение:
+
+```bash
+git init
+git config user.name "coder1"
+git config user.email "coder1@example.com"
+echo print("Hello, World!") > prog.py
+git add prog.py
+git commit -m "first commit"
+```
+
+## Результат:
+
+![image](https://github.com/user-attachments/assets/50b9da51-b4f5-4415-a81f-8a8f7634df73)
+
+```bash
+Microsoft Windows [Version 10.0.22631.4317]
+(c) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+D:\repository>git init
+Initialized empty Git repository in D:/repository/.git/
+
+D:\repository>git config user.name "coder1"
+
+D:\repository>git config user.email "coder1@example.com"
+
+D:\repository>echo print("Hello, World!") > prog.py
+
+D:\repository>git add prog.py
+
+D:\repository>git commit -m "first commit"
+[master (root-commit) ac451ff] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 prog.py
+
+D:\repository>git status
+On branch master
+nothing to commit, working tree clean
+
+D:\repository>git log
+commit ac451ff5ac0ed504be56e6d2d4b743bb7977b46d (HEAD -> master)
+Author: coder1 <coder1@example.com>
+Date:   Mon Nov 4 03:59:01 2024 +0300
+
+    first commit
+
+D:\repository>
+```
+
+## Задача 3
+
+Создать рядом с локальным репозиторием bare-репозиторий с именем server. Загрузить туда содержимое локального репозитория. Команда git remote -v должна выдать информацию о server! Синхронизировать coder1 с server.
+
+Клонировать репозиторий server в отдельной папке. Задать для работы с ним произвольные данные пользователя и почты (далее – coder2). Добавить файл readme.md с описанием программы. Обновить сервер.
+
+Coder1 получает актуальные данные с сервера. Добавляет в readme в раздел об авторах свою информацию и обновляет сервер.
+
+Coder2 добавляет в readme в раздел об авторах свою информацию и решает вопрос с конфликтами.
+
+Прислать список набранных команд и содержимое git log.
+
+Пример лога коммитов:
+
+```bash
+*   commit a457d748f0dab75b4c642e964172887de3ef4e3e
+|\  Merge: 48ce283 d731ba8
+| | Author: Coder 2 <coder2@corp.com>
+| | Date:   Sun Oct 11 11:27:09 2020 +0300
+| | 
+| |     readme fix
+| | 
+| * commit d731ba84014d603384cc3287a8ea9062dbb92303
+| | Author: Coder 1 <coder1@corp.com>
+| | Date:   Sun Oct 11 11:22:52 2020 +0300
+| | 
+| |     coder 1 info
+| | 
+* | commit 48ce28336e6b3b983cbd6323500af8ec598626f1
+|/  Author: Coder 2 <coder2@corp.com>
+|   Date:   Sun Oct 11 11:24:00 2020 +0300
+|   
+|       coder 2 info
+| 
+* commit ba9dfe9cb24316694808a347e8c36f8383d81bbe
+| Author: Coder 2 <coder2@corp.com>
+| Date:   Sun Oct 11 11:21:26 2020 +0300
+| 
+|     docs
+| 
+* commit 227d84c89e60e09eebbce6c0b94b41004a4541a4
+  Author: Coder 1 <coder1@corp.com>
+  Date:   Sun Oct 11 11:11:46 2020 +0300
+  
+      first commit
+```
+
+## Решение:
+
+```bash
+git init
+git config user.name "coder1"
+git config user.email "coder1@example.com"
+echo print("Hello, World!") > prog.py
+git add prog.py
+git commit -m "first commit"
+
+cd D:\repository
+git init --bare server
+
+git remote add server D:\repository\server
+git remote -v
+
+git push server master
+
+git clone D:\repository\server D:\repository\client
+cd D:\repository\client
+git config user.name "coder2"
+git config user.email "coder2@example.com"
+
+echo "Author Information:" > readme.md
+git add readme.md
+git commit -m "docs"
+
+git remote rename origin server
+
+git push server master
+
+cd D:\repository
+git pull server master
+
+echo "Author: coder1" >> readme.md
+git add readme.md
+git commit -m "coder1 info"
+git push server master
+
+cd D:\repository\client
+echo "Author: coder2" >> readme.md
+git add readme.md
+git commit -m "coder2 info"
+git push server master
+
+git pull server master
+
+git add readme.md
+git commit -m "readme fix"
+git push server master
+
+cd ..
+cd server
+git log -n 5 --graph --decorate --all
+```
+
+## Результат:
+
+![image](https://github.com/user-attachments/assets/f2e7371c-f6d6-4846-bea1-6014e790b1a7)
+
+```bash
+D:\repository\server>git log -n 5 --graph --decorate --all
+*   commit 73a4759924d3c8f2ab582bd8f29a9e8b1fea1a78 (HEAD -> master)
+|\  Merge: 8ebc7c1 b5f90b0
+| | Author: coder2 <coder2@example.com>
+| | Date:   Mon Nov 4 04:07:50 2024 +0300
+| |
+| |     readme fix
+| |
+| * commit b5f90b095e4917283fe8b96817ee606d812ff24a
+| | Author: coder1 <coder1@example.com>
+| | Date:   Mon Nov 4 04:06:06 2024 +0300
+| |
+| |     coder1 info
+| |
+* | commit 8ebc7c186983e9a5504a3e1bae035bd994fba577
+|/  Author: coder2 <coder2@example.com>
+|   Date:   Mon Nov 4 04:06:33 2024 +0300
+|
+|       coder2 info
+|
+* commit 0b8d1714592eac8dcb8bd4b165aa43fe58741c04
+| Author: coder2 <coder2@example.com>
+| Date:   Mon Nov 4 04:03:46 2024 +0300
+|
+|     docs
+|
+* commit ac451ff5ac0ed504be56e6d2d4b743bb7977b46d
+  Author: coder1 <coder1@example.com>
+  Date:   Mon Nov 4 03:59:01 2024 +0300
+
+      first commit
+
+D:\repository\server>
+```
+
+## Задача 4
+
+Написать программу на Питоне (или другом ЯП), которая выводит список содержимого всех объектов репозитория. Воспользоваться командой "git cat-file -p". Идеальное решение – не использовать иных сторонних команд и библиотек для работы с git.
+
+## Решение:
+
+```python
+import subprocess
+
+
+def get_git_objects():
+    # Получаем список всех объектов в репозитории
+    try:
+        # Выполняем команду 'git rev-list --all' для получения всех хешей коммитов
+        commits = subprocess.check_output(['git', 'rev-list', '--all']).decode('utf-8').splitlines()
+
+        # Для каждого коммита получаем содержимое объекта
+        for commit in commits:
+            print(f'Contents of commit {commit}:')
+            try:
+                # Используем 'git cat-file -p' для получения содержимого
+                content = subprocess.check_output(['git', 'cat-file', '-p', commit]).decode('utf-8')
+                print(content)
+            except subprocess.CalledProcessError as e:
+                print(f'Error retrieving object {commit}: {e}')
+            print('-' * 40)
+    except subprocess.CalledProcessError as e:
+        print(f'Error retrieving commits: {e}')
+
 
 if __name__ == '__main__':
-    with open('civgraph.json') as file:
-        graph = json.load(file)
-    generate_makefile(graph)
-    print("Makefile создан.")
+    get_git_objects()
 ```
 
-Содержимое civgraph.json:<br>
-```
-{
-    "mathematics": ["drama_poetry", "mysticism"],
-    "drama_poetry": ["foreign_trade"],
-    "foreign_trade": ["code_of_laws"],
-    "mysticism": ["early_empire"],
-    "early_empire": ["pottery"],
-    "pottery": [],
-    "code_of_laws": [],
-    "mining": [],
-    "bronze_working": ["mining"],
-    "sailing": ["astrology"],
-    "astrology": [],
-    "celestial_navigation": ["sailing"],
-    "writing": ["pottery"],
-    "irrigation": [],
-    "currency": [],
-    "masonry": []
-}
-```
+## Результат:
 
-В результате получим:<br>
+![image](https://github.com/user-attachments/assets/21287f60-70b6-4672-8118-5e17b039a7ec)
 
-![image](https://github.com/user-attachments/assets/d397bb13-349a-4b9e-9d81-8a8a51d0fe7b)<br>
+## Полезные ссылки
 
-## Задача №2
-Реализовать вариант трансляции, при котором повторный запуск таке не выводит для civgraph на экран уже выполненные "задачи":<br>
-Содержимое pr4_2.py:<br>
+Git
 
-![image](https://github.com/user-attachments/assets/b0be5237-ef17-451f-8542-71f7b1508c7f)<br>
+Учебник (рус.): https://git-scm.com/book/ru/v2
 
-![image](https://github.com/user-attachments/assets/09d92ed7-c5df-4c87-9337-088918bb8400)<br>
+Шпаргалка (рус.): https://training.github.com/downloads/ru/github-git-cheat-sheet/
 
-## Задача №3
-Добавить цель clean, не забыв и про "животное":<br>
-Содержимое pr4_3.py:<br>
+Официальная документация: https://git-scm.com/docs
 
-![image](https://github.com/user-attachments/assets/db0e08f1-e104-48ab-b0d6-a158804f565d)<br>
+Эксцентричный доклад Л. Торвальдса о Git: https://www.youtube.com/watch?v=4XpnKHJAok8
 
-![image](https://github.com/user-attachments/assets/e870132d-f036-4512-b2b3-fec5654b230f)<br>
+Дерево Меркла: http://cryptowiki.net/index.php?title=Дерево_Merkle
 
-## Задача №4
-Написать makefile для следующего скрипта сборки:
-```
-gcc prog-c data.c -o prog 
-dir /B › files.lst 
-7z a distr.zip *.*
-```
-Вместо gcc можно использовать другой компилятор командной строки, но на вход ему должны подаваться два модуля: рrod и data. Если используете не Windows, то исправьте вызовы команд на их эквиваленты из вашей ОС. В makefile должны быть, как минимум, следующие задачи: all, clean, archive. Обязательно покажите на примере, что уже сделанные подзадачи у вас не перестраиваются:<br>
+Git for Windows: https://git-scm.com/download/win
 
-![image](https://github.com/user-attachments/assets/cfe4fecd-b4d6-4479-b878-17f712829f39)<br>
+Репозиторий chibicc: https://github.com/rui314/chibicc.git
 
-Содержимое Makefile:
-```
-SRC = prod.go data.go
-OUT = prod
-ARCHIVE = archive.zip
+Игра по git: https://learngitbranching.js.org/?locale=ru_RU
 
-all: $(OUT) $(ARCHIVE)
+SHA-1
 
-$(OUT): $(SRC)
-        go build -o $(OUT) $(SRC)
-        @echo "$(OUT) builded."
-SRC = prod.go data.go
-OUT = prod
-ARCHIVE = archive.zip
+Описание алгоритма: https://ru.wikipedia.org/wiki/SHA-1
 
-all: $(OUT) $(ARCHIVE)
+Вероятность хеш-коллизии: https://preshing.com/20110504/hash-collision-probabilities/
 
-$(OUT): $(SRC)
-        go build -o $(OUT) $(SRC)
-        @echo "$(OUT) builded."
+https://ru.m.wikipedia.org/wiki/Парадокс_дней_рождения
 
-$(ARCHIVE): $(OUT)
-        zip -r $(ARCHIVE) $(SRC) $(OUT)
-        @echo "Archived in $(ARCHIVE)."
-
-clean:
-        rm -f $(OUT) $(ARCHIVE)
-        @echo "Cleaned."
-
-.PHONY: all clean
-```
-
-![image](https://github.com/user-attachments/assets/f7383213-d93b-4f80-ab1c-f5ba2d10726c)
+https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html
