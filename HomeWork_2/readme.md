@@ -71,7 +71,7 @@ package "Commits" {
 @enduml
 ```
 Сгенерированный uml
-![image](https://github.com/user-attachments/assets/3cbaac73-c29d-42b3-a084-624acbf6a914)
+![image](![image](https://github.com/user-attachments/assets/ef6148d1-7fa9-4401-a2a2-99dd2936dad0)
 
 Коммиты на гите
 ![image](https://github.com/user-attachments/assets/18c2323e-52e9-4641-b9d6-e5b5cb2f86f2)
