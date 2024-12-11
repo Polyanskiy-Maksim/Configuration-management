@@ -70,7 +70,7 @@ package "Commits" {
 }
 @enduml
 ```
-Сгенерированный uml
+Сгенерированный Mermaid
 ![image](![image](https://github.com/user-attachments/assets/ef6148d1-7fa9-4401-a2a2-99dd2936dad0)
 
 Коммиты на гите
