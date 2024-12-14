@@ -1,79 +1,54 @@
-# 1. Клонирование репозитория
+# Визуализатор зависимостей для Git
 
-Склонируйте репозиторий с исходным кодом и тестами:
+Этот инструмент анализирует Git-репозиторий, извлекает информацию о коммитах и изменениях в файлах, а затем генерирует граф зависимостей в формате Mermaid.
 
+## Описание
+Программа:
+1. Получает информацию о коммитах в репозитории.
+2. Строит зависимость между коммитами и файлами.
+3. Генерирует Mermaid-код для визуализации.
+
+## Структура конфигурационного файла
+Конфигурационный файл должен быть в формате XML и содержать пути к репозиторию и файлу для записи результатов:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <repo_path>путь_к_репозиторию</repo_path>
+    <output_path>путь_к_выходному_файлу</output_path>
+</config>
 ```
-git clone <URL репозитория>
-cd <директория проекта>
-```
-
-# 2. Установка зависимостей при запуске
-
-```
-pip install subprocess
-
-```
-
-# Создайте виртуальное окружение
-
+## Запуск программы
+1. Сохраните конфигурационный файл (например, config.xml).
+2. Запустите программу с командой:
 ```bash
-# Активируйте виртуальное окружение
-python -m venv venv
-# Для Windows:
-venv\Scripts\activate
-# Для MacOS/Linux:
-source venv/bin/activate
+python visualizer.py config.xml
 ```
+## Пример вывода
+Программа генерирует Mermaid-код, который можно визуализировать с помощью Mermaid Live Editor:
 
-
-# 3. Структура проекта
-Проект содержит следующие файлы и директории:
-```bash
-unittests.py              # файл для тестирования
-config.xml             # конфигурационный файл 
-hw2.py                  # файл с программой
-plantuml.jar           # plantuml
-file.puml             # файл с выводом программы 
+## mermaid
 ```
-
-# 4. Запуск проекта
-```bash
-py hw2.py config.xml     # py название файла <файл с конфигом>
+graph TD
+    abb9af2["Initial commit\nabb9af2528b8e1e31123f3bb7cb1f76fa010604d"]
+    abb9af2 --> ".gitattributes (A)"
+    380557a["commit1\n380557a92976c0f799dbf34c32b638b2d1675d34"]
+    abb9af2 --> 380557a
+    380557a --> "test1.txt (A)"
+    5ac3fd2["commit2\n5ac3fd2e3920865af17226263ed1b4b63126d319"]
+    380557a --> 5ac3fd2
+    5ac3fd2 --> "test1.txt (M)"
+    5ac3fd2 --> "test2.txt (A)"
+    9c5b2d4["commit3\n9c5b2d444cc4793ffba50d4e8548f231d4d27fc5"]
+    5ac3fd2 --> 9c5b2d4
+    9c5b2d4 --> "test1.txt (D)"
+    9c5b2d4 --> "test3.txt (A)"
+    5dd4f14["commit4\n5dd4f1495ee04d704f82d03a8dfb40959cf6a8a1"]
+    9c5b2d4 --> 5dd4f14
+    5dd4f14 --> "test2.txt (D)"
+    5dd4f14 --> "test3.txt (M)"
+    5dd4f14 --> "test4.txt (A)"
 ```
-
-
-# 5. Тестирование с моим репозитеорием 
-Вывод программы
-```
-@startuml
-!define RECTANGLE class
-package "Commits" {
-    RECTANGLE "Initial commit" as 763ab86{
-        + 763ab86414f001d11383f969e2ac1622ae630d8a
-    }
-    RECTANGLE "commit1" as 15bb8d5{
-        + 15bb8d5eb138d2a03e08f065da959ea1319de79f
-    }
-    763ab86 --> 15bb8d5
-    RECTANGLE "commit2" as 5324bbd{
-        + 5324bbde5207691ca36861ca78a2a206e1ccaab2
-    }
-    15bb8d5 --> 5324bbd
-    RECTANGLE "commit3" as cf9886d{
-        + cf9886d615d0801e99f1c27c77e7db0c77c0bb67
-    }
-    5324bbd --> cf9886d
-    RECTANGLE "commit4" as 2299184{
-        + 2299184ef2b5c9fdf63c4c14af5c48e8ca083bb4
-    }
-    cf9886d --> 2299184
-}
-@enduml
-```
-Сгенерированный Mermaid
-![image](![image](https://github.com/user-attachments/assets/ef6148d1-7fa9-4401-a2a2-99dd2936dad0)
-
-Коммиты на гите
-![image](https://github.com/user-attachments/assets/18c2323e-52e9-4641-b9d6-e5b5cb2f86f2)
-
+## Сгенерированный Mermaid
+(![image](https://github.com/user-attachments/assets/ef6148d1-7fa9-4401-a2a2-99dd2936dad0)
 
